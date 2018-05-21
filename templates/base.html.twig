@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Bare - Start Bootstrap Template</title>
+    {% block stylesheets %}
+        <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    {% endblock %}
+    <!-- Bootstrap core CSS -->
+    <!--<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+
+    <!-- Custom styles for this template -->
+    <style>
+        body {
+            padding-top: 65px;
+        }
+        @media (min-width: 992px) {
+            body {
+                padding-top: 65px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('home') }}">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('home') }}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('login') }}">Login</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('registration') }}">Registration</a>
+                </li>
+                {% endif %}
+                {%  if is_granted('IS_AUTHENTICATED_FULLY')%}
+                <li class="nav-item">
+                    <a class="nav-link  btn btn-success btn-sm active" href="{{ path('add_note') }}">Add new task</a>
+                </li>
+                    <li class="nav-item">
+                        <a class="nav-link  btn btn-success btn-sm active" href="{{ path('add_image') }}">Add Image</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+                    </li>
+
+                {%  endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+{% block body %}
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>text</th>
+                <th>Owner</th>
+                <th>edit</th>
+                <th>delete</th>
+            </tr>
+            {% for note in notes %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ note.title }}</td>
+                <td>{{ note.text }}</td>
+                <td>{{ note.user.username }}</td>
+                <td><a class="btn btn-warning btn-sm active" href="{{ path('edit',{'id':note.id}) }}">edit</a></td>
+                <td><a class="btn btn-danger btn-sm active" href="{{ path('delete', {'id':note.id })}} ">delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+<!-- Bootstrap core JavaScript -->
+{% block javascripts %}
+<script src="{{ asset('jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+{% endblock %}
+</body>
+
+</html>

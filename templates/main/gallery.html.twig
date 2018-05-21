@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table class="table">
+        <tr>
+            <th>image</th>
+        </tr>
+        {% for image in images %}
+            <tr>
+                <td><img src="{{ asset('uploads/images/' ~ image.image) }}" width="200px" alt=""><a href="{{ path('delete_image',{'id':image.id}) }}">delete_image</a></td>
+            </tr>
+         {% endfor %}
+    </table>
+{% endblock %}
