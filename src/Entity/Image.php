@@ -19,6 +19,10 @@ class Image
      * @ORM\Column(type="string")
      */
     private $image;
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="images")
+     */
+    private $user;
 
     /**
      * @return mixed
@@ -39,4 +43,21 @@ class Image
     {
         return $this->id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+    
 }

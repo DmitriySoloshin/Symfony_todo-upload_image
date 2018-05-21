@@ -45,9 +45,15 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="Note", mappedBy="user")
      */
     private $notes;
+    /**
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="user")
+     */
+    private $images;
+    
     public function __construct()
     {
         $this->notes = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     /**
@@ -146,5 +152,22 @@ class User implements UserInterface
     {
         // TODO: Implement getSalt() method.
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param mixed $images
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+    }
+
 
 }

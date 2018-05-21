@@ -33,6 +33,7 @@ class MainController extends Controller
      */
     public function addNote(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $notes = new Note();
         $form = $this->createForm(NoteType::class, $notes);
         $form->handleRequest($request);
@@ -53,6 +54,7 @@ class MainController extends Controller
      */
     public function editNote(Request $request, Note $note)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
        // $note = $this->getDoctrine()->getRepository(Note::class)->find($id);
         $form = $this->createForm(NoteType::class, $note);
         $form->handleRequest($request);
@@ -72,6 +74,7 @@ class MainController extends Controller
      */
     public function deleteNote(Note $note)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $em = $this->getDoctrine()->getManager();
         $em->remove($note);
         $em->flush();
@@ -84,6 +87,7 @@ class MainController extends Controller
      */
     public function addImage(Request $request, FileUploader $fileUploader)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
@@ -95,6 +99,7 @@ class MainController extends Controller
             $file = $image->getImage();
             $imageName = $fileUploader->upload($file);
             $image->setImage($imageName);
+            $image->setUser($this->getUser());
             $em =$this->getDoctrine()->getManager();
             $em->persist($image);
             $em->flush();
@@ -109,6 +114,7 @@ class MainController extends Controller
      */
     public function deleteImage($id)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $image= $this->getDoctrine()->getRepository(Image::class)->find($id);
         $img = $image->getImage();
         $path = $this->getParameter('image_directory').'/'.$img;
@@ -126,7 +132,8 @@ class MainController extends Controller
      */
     public function gallery(ImageRepository $imageRepository)
     {
-        $images = $imageRepository->findAll();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $images = $imageRepository->findBy(['user'=>$this->getUser()]);
         return $this->render('main/gallery.html.twig', ['images'=> $images]);
     }
 }
